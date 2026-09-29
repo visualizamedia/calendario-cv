@@ -20,6 +20,12 @@ Otros calendarios → Añadir por URL:
 https://<usuario>.github.io/<repo>/calendario.ics
 ```
 
+El feed lleva **solo los partidos en casa**, que son a los que se va a ir.
+`partidos.json` conserva los 88 para que la web pueda quitar el filtro; para
+llevarte un partido de fuera al calendario, usa el boton **+ Google** de esa
+fila. Si algun dia quieres el feed completo, quita el filtro `en_casa` del
+bloque final de `fetch.py`.
+
 Google relee el feed cada 12-24 horas por su cuenta; no es instantaneo.
 Para un partido concreto y al momento, usa el boton **+ Google** de cada fila
 en la web, que crea el evento directamente.

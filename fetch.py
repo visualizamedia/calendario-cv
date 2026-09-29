@@ -83,6 +83,11 @@ def recoge():
     return partidos
 
 
+def sin_sello(texto):
+    """El texto sin las lineas DTSTAMP, que cambian en cada ejecucion."""
+    return "\n".join(l for l in texto.splitlines() if not l.startswith("DTSTAMP:"))
+
+
 def esc(texto):
     for viejo, nuevo in (("\\", "\\\\"), (";", "\;"), (",", "\,"), ("\n", "\n")):
         texto = texto.replace(viejo, nuevo)
@@ -110,7 +115,7 @@ def ics(partidos):
     lineas = [
         "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//calendario-cv//ES",
         "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
-        "X-WR-CALNAME:CV Collado Villalba", "X-WR-TIMEZONE:Europe/Madrid",
+        "X-WR-CALNAME:CV Collado Villalba (en casa)", "X-WR-TIMEZONE:Europe/Madrid",
     ] + VTIMEZONE
     for p in partidos:
         titulo = f'{p["local"]} - {p["visitante"]}'
@@ -173,6 +178,12 @@ def demo():
     assert b"\r\r" not in crudo, "saltos de linea traducidos"
     assert crudo.count(b"\n") == crudo.count(b"\r\n"), "hay \\n sin su \\r"
     assert all(len(l) <= 75 for l in crudo.split(b"\r\n"))
+
+    # Dos generaciones con distinto DTSTAMP tienen que compararse iguales, o el cron
+    # commitearia a diario; y una diferencia real tiene que detectarse igualmente.
+    otro = salida.replace("DTSTAMP:2", "DTSTAMP:1")
+    assert otro != salida and sin_sello(otro) == sin_sello(salida)
+    assert sin_sello(ics(p[:1])) != sin_sello(salida)
     print("demo ok")
 
 
@@ -182,16 +193,23 @@ if __name__ == "__main__":
     else:
         partidos = recoge()
         OUT.mkdir(exist_ok=True)
-        destino = OUT / "partidos.json"
-        nuevo = json.dumps(partidos, ensure_ascii=False, indent=1)
-        # DTSTAMP cambia en cada ejecucion, asi que no reescribimos si los datos son
-        # identicos: evita un commit diario sin cambios reales.
-        if destino.exists() and destino.read_text(encoding="utf-8") == nuevo:
+        # El .ics solo lleva los partidos en casa, que son a los que se va a ir.
+        # partidos.json mantiene los 88 para que la web pueda quitar el filtro.
+        en_casa = [p for p in partidos if p["casa"]]
+        salidas = {
+            OUT / "partidos.json": json.dumps(partidos, ensure_ascii=False, indent=1),
+            OUT / "calendario.ics": ics(en_casa),
+        }
+        # Comparamos ignorando DTSTAMP, lo unico que cambia en cada ejecucion: asi no
+        # commiteamos a diario sin motivo, pero cualquier otra diferencia si se
+        # reescribe, incluido un cambio de formato del .ics o un fichero que falte.
+        if all(f.exists() and sin_sello(f.read_text(encoding="utf-8")) == sin_sello(t)
+               for f, t in salidas.items()):
             print("sin cambios")
             sys.exit()
-        # newline="" desactiva la traduccion de saltos de linea: en Windows los
-        # \r\n del iCalendar se escribirian como \r\r\n y el fichero saldria roto.
-        destino.write_text(nuevo, encoding="utf-8", newline="\n")
-        (OUT / "calendario.ics").write_text(ics(partidos), encoding="utf-8", newline="")
-        print(f"{len(partidos)} partidos, "
-              f'{sum(1 for p in partidos if not p["confirmado"])} por confirmar')
+        for f, t in salidas.items():
+            # newline="" desactiva la traduccion de saltos de linea: en Windows los
+            # \r\n del iCalendar se escribirian como \r\r\n y el fichero saldria roto.
+            f.write_text(t, encoding="utf-8", newline="" if f.suffix == ".ics" else "\n")
+        print(f"{len(partidos)} partidos, {len(en_casa)} en casa al .ics, "
+              f'{sum(1 for p in en_casa if not p["confirmado"])} de ellos por confirmar')
