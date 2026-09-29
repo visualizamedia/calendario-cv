@@ -77,7 +77,12 @@ def recoge():
                     "pabellon": (p["pabellon"] or "").strip(),
                     "casa": EQUIPO in normaliza(local),
                     "confirmado": confirmado,
-                    "aplazado": bool(p.get("esAplazado") or p.get("fechaAplazada")),
+                    # esAplazado es un partido suspendido, sin fecha nueva. Distinto de
+                    # fechaAplazada, que es un partido ya recolocado en otra jornada con
+                    # fecha y pabellon firmes: ese no lleva aviso, solo la procedencia.
+                    "aplazado": bool(p.get("esAplazado")),
+                    "proviene": (p.get("jornadaProviene") or "")
+                    if p.get("fechaAplazada") or p.get("esDeOtraJornada") else "",
                 })
     partidos.sort(key=lambda p: (p["fecha"], p["hora"] or "00:00"))
     return partidos
@@ -123,6 +128,9 @@ def ics(partidos):
             titulo = "APLAZADO: " + titulo
         elif not p["confirmado"]:
             titulo = "POR CONFIRMAR: " + titulo
+        descripcion = f'{p["competicion"]} - Jornada {p["jornada"]}'
+        if p["proviene"]:
+            descripcion += f' (recolocado, venia de la {p["proviene"]})'
         lineas += ["BEGIN:VEVENT", f'UID:{p["id"]}@calendario-cv', f"DTSTAMP:{ahora}"]
         if p["confirmado"]:
             h, mi = (int(x) for x in p["hora"].split(":"))
@@ -140,7 +148,7 @@ def ics(partidos):
             ]
         lineas += [
             plegar(f"SUMMARY:{esc(titulo)}"),
-            plegar(f'DESCRIPTION:{esc(p["competicion"])} - Jornada {p["jornada"]}'),
+            plegar(f"DESCRIPTION:{esc(descripcion)}"),
             "STATUS:" + ("CONFIRMED" if p["confirmado"] and not p["aplazado"] else "TENTATIVE"),
         ]
         if p["pabellon"]:
@@ -155,10 +163,11 @@ def demo():
         "id": "1-2", "competicion": "Test; con coma, y punto y coma", "jornada": "1",
         "fecha": "2026-10-11", "hora": None, "local": "A", "visitante": "B",
         "pabellon": "", "casa": True, "confirmado": False, "aplazado": False,
+        "proviene": "",
     }, {
         "id": "1-3", "competicion": "Test", "jornada": "2", "fecha": "2026-10-11",
         "hora": "16:30", "local": "A", "visitante": "B", "pabellon": "LOS CANTOS",
-        "casa": True, "confirmado": True, "aplazado": False,
+        "casa": True, "confirmado": True, "aplazado": False, "proviene": "J6",
     }]
     salida = ics(p)
     assert "DTSTART;VALUE=DATE:20261011" in salida
@@ -167,6 +176,10 @@ def demo():
     assert "DTEND;TZID=Europe/Madrid:20261011T183000" in salida
     assert "TZID:Europe/Madrid" in salida
     assert "DESCRIPTION:Test\; con coma\, y punto y coma - Jornada 1" in salida
+    # Un partido recolocado con fecha firme sigue confirmado: solo anota su origen.
+    assert "SUMMARY:A - B\r\n" in salida and "APLAZADO" not in salida
+    assert "(recolocado\, venia de la J6)" in salida
+    assert salida.count("STATUS:CONFIRMED") == 1
     assert all(len(l.encode()) <= 75 for l in salida.split("\r\n"))
     assert normaliza("CIRCE FISIOTERAPIA CV COLLADO VILLALBA").count(EQUIPO) == 1
 

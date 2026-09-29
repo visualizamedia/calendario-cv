@@ -105,7 +105,7 @@ function pinta() {
       <div class="quien">
         <div class="eq">${marca(p.local)} <span style="color:var(--mut)">vs</span> ${marca(p.visitante)}
           ${p.aplazado ? '<span class="tag">APLAZADO</span>' : p.confirmado ? '' : '<span class="tag">POR CONFIRMAR</span>'}</div>
-        <div class="meta">${p.competicion} · J${p.jornada}${p.pabellon ? ' · ' + p.pabellon : ''}</div>
+        <div class="meta">${p.competicion} · J${p.jornada}${p.pabellon ? ' · ' + p.pabellon : ''}${p.proviene ? ' · recolocado, venía de la ' + p.proviene : ''}</div>
       </div>
       <a class="gcal" target="_blank" rel="noopener" href="${gcal(p)}">+ Google</a>
     </div>`;
