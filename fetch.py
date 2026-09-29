@@ -32,6 +32,14 @@ END:VTIMEZONE""".splitlines()
 OUT = Path(__file__).parent / "docs"
 EQUIPO = "collado villalba"
 
+# El nombre del equipo lleva patrocinador ("COX CV Collado Villalba") y puede cambiar
+# a mitad de temporada; el id de club en cada federacion no. Filtrar solo por nombre
+# dejaria el feed a cero sin avisar y Google borraria los eventos del calendario.
+CLUB = {
+    "https://rfevb.fontventa.com": "9371",
+    "https://intranet.fmvoley.com": "21",
+}
+
 # (etiqueta, host de la API, grupoId)
 GRUPOS = [
     ("Masculino SM2 - Grupo C", "https://rfevb.fontventa.com", 87),
@@ -50,42 +58,62 @@ def descarga(host, grupo_id):
     url = f"{host}/api/competiciones/getJornadasCalendario?grupoId={grupo_id}"
     req = urllib.request.Request(url, headers={"User-Agent": "calendario-cv"})
     with urllib.request.urlopen(req, timeout=30) as r:
-        return json.loads(r.read().decode("utf-8"))["content"]
+        datos = json.loads(r.read().decode("utf-8"))
+    if not datos.get("content"):
+        raise SystemExit(f"{host} grupo {grupo_id}: sin calendario ({datos.get('Error')})")
+    return datos["content"]
+
+
+def filtra(etiqueta, host, grupo_id, jornadas):
+    """Los partidos del club en un grupo, por id de partido. Sin red, para poder probarlo."""
+    club = CLUB.get(host)
+    encontrados = {}
+    for jornada in jornadas:
+        for p in jornada["partidos"]:
+            local, visitante = p["equipo_local"], p["equipo_visitante"]
+            casa = str(p.get("clubLocalId")) == club or EQUIPO in normaliza(local)
+            if not (casa or str(p.get("clubVisitanteId")) == club
+                    or EQUIPO in normaliza(visitante)):
+                continue
+            dia, _, hora = p["fecha_hora"].partition(" ")
+            d, m, a = (int(x) for x in dia.split("/"))
+            h, _, mi = hora.partition(":")
+            # La federacion publica 00:00 mientras no cierra el horario. El pabellon
+            # suele llegar a la vez, pero si llega solo la hora ya es dato firme.
+            confirmado = bool(int(h))
+            # Por id: un partido recolocado puede asomar en dos jornadas a la vez, y
+            # dos VEVENT con el mismo UID dejan el calendario en estado indefinido.
+            encontrados[f'{grupo_id}-{p["id"]}'] = {
+                "id": f'{grupo_id}-{p["id"]}',
+                "competicion": etiqueta,
+                "jornada": jornada["numero"],
+                "fecha": date(a, m, d).isoformat(),
+                "hora": f"{int(h):02d}:{int(mi):02d}" if confirmado else None,
+                "local": local,
+                "visitante": visitante,
+                "pabellon": (p["pabellon"] or "").strip(),
+                "casa": casa,
+                "confirmado": confirmado,
+                # esAplazado es un partido suspendido, sin fecha nueva. Distinto de
+                # fechaAplazada, que es un partido ya recolocado en otra jornada con
+                # fecha y pabellon firmes: ese no lleva aviso, solo la procedencia.
+                "aplazado": bool(p.get("esAplazado")),
+                "proviene": (p.get("jornadaProviene") or "")
+                if p.get("fechaAplazada") or p.get("esDeOtraJornada") else "",
+            }
+    # Cero partidos = grupoId caducado, club cambiado de grupo o API vacia. Publicar el
+    # feed recortado haria que Google borrase esos eventos del calendario sin avisar.
+    if not encontrados:
+        raise SystemExit(f"{etiqueta}: 0 partidos del club, no publico un feed incompleto")
+    return encontrados
 
 
 def recoge():
-    partidos = []
+    assert len({g[2] for g in GRUPOS}) == len(GRUPOS), "grupoId repetido: los UID chocarian"
+    partidos = {}
     for etiqueta, host, grupo_id in GRUPOS:
-        for jornada in descarga(host, grupo_id):
-            for p in jornada["partidos"]:
-                local, visitante = p["equipo_local"], p["equipo_visitante"]
-                if EQUIPO not in normaliza(local + " " + visitante):
-                    continue
-                dia, _, hora = p["fecha_hora"].partition(" ")
-                d, m, a = (int(x) for x in dia.split("/"))
-                h, _, mi = hora.partition(":")
-                # La federacion publica 00:00 y pabellon vacio mientras no confirma.
-                confirmado = bool(int(h)) and bool((p["pabellon"] or "").strip())
-                partidos.append({
-                    "id": f'{grupo_id}-{p["id"]}',
-                    "competicion": etiqueta,
-                    "jornada": jornada["numero"],
-                    "fecha": date(a, m, d).isoformat(),
-                    "hora": f"{int(h):02d}:{int(mi):02d}" if confirmado else None,
-                    "local": local,
-                    "visitante": visitante,
-                    "pabellon": (p["pabellon"] or "").strip(),
-                    "casa": EQUIPO in normaliza(local),
-                    "confirmado": confirmado,
-                    # esAplazado es un partido suspendido, sin fecha nueva. Distinto de
-                    # fechaAplazada, que es un partido ya recolocado en otra jornada con
-                    # fecha y pabellon firmes: ese no lleva aviso, solo la procedencia.
-                    "aplazado": bool(p.get("esAplazado")),
-                    "proviene": (p.get("jornadaProviene") or "")
-                    if p.get("fechaAplazada") or p.get("esDeOtraJornada") else "",
-                })
-    partidos.sort(key=lambda p: (p["fecha"], p["hora"] or "00:00"))
-    return partidos
+        partidos.update(filtra(etiqueta, host, grupo_id, descarga(host, grupo_id)))
+    return sorted(partidos.values(), key=lambda p: (p["fecha"], p["hora"] or "00:00"))
 
 
 def sin_sello(texto):
@@ -197,6 +225,51 @@ def demo():
     otro = salida.replace("DTSTAMP:2", "DTSTAMP:1")
     assert otro != salida and sin_sello(otro) == sin_sello(salida)
     assert sin_sello(ics(p[:1])) != sin_sello(salida)
+
+    # Lo que la federacion cambia sobre la marcha. En todos los casos tiene que salir
+    # UN evento con el mismo UID, para que Google lo actualice en vez de duplicarlo.
+    FM = "https://intranet.fmvoley.com"
+    fila = lambda **kw: [{"numero": "1", "partidos": [dict(
+        {"id": 7, "equipo_local": "CV COLLADO VILLALBA", "equipo_visitante": "B",
+         "clubLocalId": "21", "clubVisitanteId": "99",
+         "fecha_hora": "11/10/2026 0:00", "pabellon": ""}, **kw)]}]
+    firme = {"fecha_hora": "11/10/2026 16:30", "pabellon": "LOS CANTOS"}
+    sin_hora = filtra("T", FM, 5, fila())
+    con_hora = filtra("T", FM, 5, fila(**firme))
+    movido = filtra("T", FM, 5, fila(**dict(firme, fecha_hora="18/10/2026 19:00")))
+    assert list(sin_hora) == list(con_hora) == list(movido) == ["5-7"]
+    assert not sin_hora["5-7"]["confirmado"] and con_hora["5-7"]["confirmado"]
+    assert "DTSTART;VALUE=DATE:20261011" in ics(sin_hora.values())
+    assert "DTSTART;TZID=Europe/Madrid:20261011T163000" in ics(con_hora.values())
+    assert "DTSTART;TZID=Europe/Madrid:20261018T190000" in ics(movido.values())
+    # Cierran la hora pero aun no el pabellon: la hora ya vale, el evento no lleva sitio.
+    solo_hora = filtra("T", FM, 5, fila(fecha_hora="11/10/2026 16:30"))
+    assert solo_hora["5-7"]["confirmado"] and "LOCATION" not in ics(solo_hora.values())
+    # Cambia el patrocinador y el nombre deja de decir Collado Villalba: el clubId no.
+    patro = filtra("T", FM, 5, fila(equipo_local="NUEVO PATROCINADOR C.V."))
+    assert list(patro) == ["5-7"] and patro["5-7"]["casa"]
+    # Fuera de casa: mismo partido, pero no entra en el feed.
+    fuera = filtra("T", FM, 5, fila(equipo_local="B", clubLocalId="99",
+                                    equipo_visitante="CV COLLADO VILLALBA",
+                                    clubVisitanteId="21"))
+    assert not fuera["5-7"]["casa"]
+    # El mismo partido asomando en dos jornadas: un solo evento, sin UID repetido.
+    doble = fila()[0]["partidos"]
+    dedup = filtra("T", FM, 5, [{"numero": "1", "partidos": doble},
+                                {"numero": "9", "partidos": doble}])
+    assert ics(dedup.values()).count("BEGIN:VEVENT") == 1
+    # Suspendido de verdad, sin fecha nueva.
+    susp = ics(filtra("T", FM, 5, fila(esAplazado=True, **firme)).values())
+    assert "SUMMARY:APLAZADO: " in susp and "STATUS:CONFIRMED" not in susp
+    # Grupo que se queda sin partidos del club: parar, no publicar un feed recortado.
+    for vacio in ([], [{"numero": "1", "partidos": []}],
+                  fila(equipo_local="OTRO", equipo_visitante="OTRO", clubLocalId="1")):
+        try:
+            filtra("T", FM, 5, vacio)
+        except SystemExit:
+            pass
+        else:
+            raise AssertionError("un grupo sin partidos del club tiene que parar")
     print("demo ok")
 
 
