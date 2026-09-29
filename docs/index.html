@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Calendario CV Collado Villalba</title>
+<style>
+:root{--bg:#f7f8fa;--card:#fff;--txt:#16181d;--mut:#6b7280;--line:#e5e7eb;--acc:#0b63c5;--warn:#b45309;--warnbg:#fef3c7}
+@media(prefers-color-scheme:dark){:root{--bg:#111318;--card:#1b1e25;--txt:#e9eaee;--mut:#9aa1ad;--line:#2c313b;--acc:#63a4ff;--warn:#fbbf24;--warnbg:#3a2f12}}
+*{box-sizing:border-box}
+body{margin:0;padding:24px 16px;background:var(--bg);color:var(--txt);font:16px/1.5 system-ui,sans-serif}
+main{max-width:760px;margin:0 auto}
+h1{font-size:1.5rem;margin:0 0 4px}
+.sub{color:var(--mut);font-size:.9rem;margin:0 0 20px}
+.sus{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:20px}
+.sus code{display:block;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px;margin-top:8px;font-size:.78rem;word-break:break-all}
+button,select{font:inherit;padding:7px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--txt);cursor:pointer}
+.filtros{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+h2{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);margin:24px 0 8px}
+.p{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:8px;padding:12px 14px;margin-bottom:8px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.p.sin{border-left-color:var(--warn);background:var(--warnbg)}
+.cuando{min-width:88px;font-variant-numeric:tabular-nums}
+.dia{font-weight:600}.hora{color:var(--mut);font-size:.9rem}
+.quien{flex:1;min-width:200px}
+.eq{font-weight:600}.eq em{font-style:normal;color:var(--acc)}
+.meta{color:var(--mut);font-size:.82rem;margin-top:2px}
+.tag{display:inline-block;background:var(--warn);color:#fff;border-radius:4px;padding:1px 6px;font-size:.7rem;font-weight:700;margin-left:6px}
+a.gcal{text-decoration:none;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:.82rem;white-space:nowrap}
+</style>
+</head>
+<body><main>
+<h1>CV Collado Villalba</h1>
+<p class="sub" id="resumen">Cargando…</p>
+
+<div class="sus">
+  <strong>Suscribir en Google Calendar</strong> — Otros calendarios → Añadir por URL:
+  <code id="feed"></code>
+</div>
+
+<div class="filtros">
+  <select id="equipo"><option value="">Todos los equipos</option></select>
+  <button id="ocultar">Ocultar pasados</button>
+</div>
+
+<div id="lista"></div>
+</main>
+<script>
+const FEED = new URL('calendario.ics', location.href).href;
+document.getElementById('feed').textContent = FEED;
+
+const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const DIAS = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+const hoy = new Date().toISOString().slice(0, 10);
+let partidos = [], soloFuturos = true;
+
+const marca = t => /collado villalba/i.test(t) ? `<em>${t}</em>` : t;
+
+function gcal(p) {
+  const f = p.fecha.replaceAll('-', '');
+  const u = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: (p.confirmado ? '' : 'POR CONFIRMAR: ') + `${p.local} - ${p.visitante}`,
+    details: `${p.competicion} — Jornada ${p.jornada}`,
+    location: p.pabellon,
+    ctz: 'Europe/Madrid',
+  });
+  if (p.confirmado) {
+    const ini = new Date(`${p.fecha}T${p.hora}`);
+    const fin = new Date(ini.getTime() + 2 * 3600e3);
+    const sello = d => d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') +
+      String(d.getDate()).padStart(2, '0') + 'T' + String(d.getHours()).padStart(2, '0') +
+      String(d.getMinutes()).padStart(2, '0') + '00';
+    u.set('dates', `${sello(ini)}/${sello(fin)}`);
+  } else {
+    const d = new Date(p.fecha + 'T12:00');
+    d.setDate(d.getDate() + 1);
+    u.set('dates', `${f}/${d.toISOString().slice(0, 10).replaceAll('-', '')}`);
+  }
+  return 'https://calendar.google.com/calendar/render?' + u;
+}
+
+function pinta() {
+  const eq = document.getElementById('equipo').value;
+  const ver = partidos.filter(p => (!eq || p.competicion === eq) && (!soloFuturos || p.fecha >= hoy));
+  let html = '', mes = '';
+  for (const p of ver) {
+    const d = new Date(p.fecha + 'T12:00');
+    const m = `${MESES[d.getMonth()]} ${d.getFullYear()}`;
+    if (m !== mes) { html += `<h2>${mes = m}</h2>`; }
+    html += `<div class="p ${p.confirmado ? '' : 'sin'}">
+      <div class="cuando">
+        <div class="dia">${DIAS[d.getDay()].slice(0, 3)} ${d.getDate()}</div>
+        <div class="hora">${p.confirmado ? p.hora : '--:--'}</div>
+      </div>
+      <div class="quien">
+        <div class="eq">${marca(p.local)} <span style="color:var(--mut)">vs</span> ${marca(p.visitante)}
+          ${p.aplazado ? '<span class="tag">APLAZADO</span>' : p.confirmado ? '' : '<span class="tag">POR CONFIRMAR</span>'}</div>
+        <div class="meta">${p.competicion} · J${p.jornada}${p.pabellon ? ' · ' + p.pabellon : ''}</div>
+      </div>
+      <a class="gcal" target="_blank" rel="noopener" href="${gcal(p)}">+ Google</a>
+    </div>`;
+  }
+  document.getElementById('lista').innerHTML = html || '<p>No hay partidos.</p>';
+}
+
+fetch('partidos.json').then(r => r.json()).then(d => {
+  partidos = d;
+  const sin = d.filter(p => !p.confirmado).length;
+  document.getElementById('resumen').textContent =
+    `${d.length} partidos · ${sin} sin hora confirmada · datos de RFEVB y FMVoley`;
+  document.getElementById('equipo').insertAdjacentHTML('beforeend',
+    [...new Set(d.map(p => p.competicion))].map(c => `<option>${c}</option>`).join(''));
+  pinta();
+});
+
+document.getElementById('equipo').onchange = pinta;
+document.getElementById('ocultar').onclick = e => {
+  soloFuturos = !soloFuturos;
+  e.target.textContent = soloFuturos ? 'Ocultar pasados' : 'Mostrar todos';
+  pinta();
+};
+</script>
+</body></html>
