@@ -164,6 +164,15 @@ def demo():
     assert "DESCRIPTION:Test\; con coma\, y punto y coma - Jornada 1" in salida
     assert all(len(l.encode()) <= 75 for l in salida.split("\r\n"))
     assert normaliza("CIRCE FISIOTERAPIA CV COLLADO VILLALBA").count(EQUIPO) == 1
+
+    # El fichero, no solo la cadena: en Windows sin newline="" saldrian \r\r\n.
+    import tempfile
+    tmp = Path(tempfile.mkdtemp()) / "t.ics"
+    tmp.write_text(salida, encoding="utf-8", newline="")
+    crudo = tmp.read_bytes()
+    assert b"\r\r" not in crudo, "saltos de linea traducidos"
+    assert crudo.count(b"\n") == crudo.count(b"\r\n"), "hay \\n sin su \\r"
+    assert all(len(l) <= 75 for l in crudo.split(b"\r\n"))
     print("demo ok")
 
 
@@ -180,7 +189,9 @@ if __name__ == "__main__":
         if destino.exists() and destino.read_text(encoding="utf-8") == nuevo:
             print("sin cambios")
             sys.exit()
-        destino.write_text(nuevo, encoding="utf-8")
-        (OUT / "calendario.ics").write_text(ics(partidos), encoding="utf-8")
+        # newline="" desactiva la traduccion de saltos de linea: en Windows los
+        # \r\n del iCalendar se escribirian como \r\r\n y el fichero saldria roto.
+        destino.write_text(nuevo, encoding="utf-8", newline="\n")
+        (OUT / "calendario.ics").write_text(ics(partidos), encoding="utf-8", newline="")
         print(f"{len(partidos)} partidos, "
               f'{sum(1 for p in partidos if not p["confirmado"])} por confirmar')
