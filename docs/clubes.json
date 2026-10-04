@@ -1,0 +1,23 @@
+[
+ {
+  "slug": "collado-villalba",
+  "nombre": "CV Collado Villalba",
+  "clave": "collado villalba",
+  "json": "partidos.json",
+  "ics": "calendario.ics"
+ },
+ {
+  "slug": "majadahonda",
+  "nombre": "CV Majadahonda senior femenino",
+  "clave": "majadahonda",
+  "json": "majadahonda.json",
+  "ics": "majadahonda.ics"
+ },
+ {
+  "slug": "guadarrama",
+  "nombre": "CV Guadarrama senior femenino",
+  "clave": "guadarrama",
+  "json": "guadarrama.json",
+  "ics": "guadarrama.ics"
+ }
+]

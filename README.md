@@ -1,7 +1,17 @@
-# Calendario CV Collado Villalba
+# Calendario de partidos de voleibol
 
-Genera un calendario unificado con los partidos de los cuatro equipos del club,
-a partir de las APIs publicas de la RFEVB y la Federacion de Madrid.
+Genera un calendario por club con los partidos de sus equipos, a partir de las
+APIs publicas de la RFEVB y la Federacion de Madrid. Ahora mismo hay tres:
+
+| Club | Equipos | Feed |
+|---|---|---|
+| CV Collado Villalba | los cuatro del club | `calendario.ics` |
+| CV Majadahonda | senior femenino (A y B) | `majadahonda.ics` |
+| CV Guadarrama | senior femenino (Negro y Rojo) | `guadarrama.ics` |
+
+La web es una sola pagina con un selector de club. Cada club tiene su propia
+direccion para guardarla en marcadores: `?club=collado-villalba`,
+`?club=majadahonda`, `?club=guadarrama`.
 
 ## Puesta en marcha
 
@@ -10,18 +20,24 @@ a partir de las APIs publicas de la RFEVB y la Federacion de Madrid.
 3. Settings → Actions → General → Workflow permissions: **Read and write permissions**.
 
 La accion programada se ejecuta cada dia a las 05:00 UTC y vuelve a publicar
-`docs/partidos.json` y `docs/calendario.ics` solo si algo ha cambiado.
+los ficheros de `docs/` solo si algo ha cambiado.
 
 ## Suscribir en Google Calendar
 
 Otros calendarios → Añadir por URL:
 
 ```
-https://<usuario>.github.io/<repo>/calendario.ics
+https://<usuario>.github.io/<repo>/calendario.ics     # CV Collado Villalba
+https://<usuario>.github.io/<repo>/majadahonda.ics    # CV Majadahonda
+https://<usuario>.github.io/<repo>/guadarrama.ics     # CV Guadarrama
 ```
 
-El feed lleva **solo los partidos en casa**, que son a los que se va a ir.
-`partidos.json` conserva los 88 para que la web pueda quitar el filtro; para
+Son tres calendarios independientes: puedes suscribirte a uno, a dos o a los
+tres, y en Google aparecen como calendarios separados que se pueden ocultar por
+separado.
+
+Cada feed lleva **solo los partidos en casa**, que son a los que se va a ir.
+El `.json` de cada club conserva todos para que la web pueda quitar el filtro; para
 llevarte un partido de fuera al calendario, usa el boton **+ Google** de esa
 fila. Si algun dia quieres el feed completo, quita el filtro `en_casa` del
 bloque final de `fetch.py`.
@@ -53,6 +69,7 @@ federativo desaparece del feed y Google lo borra.
 | Lo suspenden (`esAplazado`) | Titulo `APLAZADO:` y estado tentativo |
 | El mismo partido asoma en dos jornadas | Un solo evento, sin UID repetido |
 | Cambia el patrocinador del equipo | Se sigue reconociendo por id de club |
+| Jornada de descanso (`Descansa...`, clubId 0) | No es partido: no genera evento |
 
 Dos frenos para no publicar un feed incompleto, que le haria borrar eventos a
 Google sin avisar: la descarga para si un grupo devuelve el calendario vacio, y
@@ -62,21 +79,37 @@ rojo y GitHub avisa por correo; el feed publicado se queda como estaba.
 
 Todo esto lo cubre `python fetch.py --demo`, que es el primer paso de la accion.
 
-## Equipos y grupos
+## Clubes, equipos y grupos
 
-| Equipo | API | grupoId |
-|---|---|---|
-| Masculino SM2 Grupo C | rfevb.fontventa.com | 87 |
-| Femenino SF2 Grupo C | rfevb.fontventa.com | 226 |
-| Senior Fem. 2a Aut. Preferente Grupo A | intranet.fmvoley.com | 34075 |
-| Junior Fem. 1a Aut. Preferente Unico | intranet.fmvoley.com | 33941 |
+| Club | id de club | Equipo | API | grupoId |
+|---|---|---|---|---|
+| Collado Villalba | 9371 RFEVB / 21 Madrid | Masculino SM2 Grupo C | rfevb.fontventa.com | 87 |
+| Collado Villalba | | Femenino SF2 Grupo C | rfevb.fontventa.com | 226 |
+| Collado Villalba | | Senior Fem. 2a Aut. Preferente Grupo A | intranet.fmvoley.com | 34075 |
+| Collado Villalba | | Junior Fem. 1a Aut. Preferente Unico | intranet.fmvoley.com | 33941 |
+| Majadahonda | 19 Madrid | Senior Fem. 2a Aut. Preferente Grupo A (equipo A) | intranet.fmvoley.com | 34075 |
+| Majadahonda | | Senior Fem. 1a Aut. Zonal Grupo A (equipo B) | intranet.fmvoley.com | 34222 |
+| Guadarrama | 155 Madrid | Senior Fem. 1a Aut. Zonal Grupo A (Negro) | intranet.fmvoley.com | 34222 |
+| Guadarrama | | Senior Fem. 2a Aut. Zonal Unico (Rojo) | intranet.fmvoley.com | 34229 |
 
-Cambian cada temporada. Para localizar los nuevos: abre la pagina del grupo en
-esvoley.es o fmvoley.com y mira el parametro `grupoId` de las llamadas a
-`/api/competiciones/` en la pestaña Red del navegador. Luego edita `GRUPOS` en
-`fetch.py`. Los `grupoId` tienen que ser distintos entre si, o los UID chocarian;
-`recoge` lo comprueba. Los id de club de `CLUB` (9371 en la RFEVB, 21 en la
-madrileña) no cambian de temporada.
+Ni Majadahonda ni Guadarrama tienen equipo senior femenino en competicion
+nacional, asi que sus dos calendarios solo usan la API de la federacion
+madrileña. Un mismo `grupoId` puede aparecer en dos clubes (Villalba y
+Majadahonda A comparten el 34075); lo que no puede es repetirse dentro de un
+club, y `recoge` lo comprueba.
+
+Los `grupoId` cambian cada temporada. Para localizar los nuevos: abre la pagina
+del grupo en esvoley.es o fmvoley.com y mira el parametro `grupoId` de las
+llamadas a `/api/competiciones/` en la pestaña Red del navegador. Luego edita
+`CLUBES` en `fetch.py`. Los id de club no cambian de temporada.
+
+## Añadir un club
+
+En `fetch.py`, un elemento mas en `CLUBES`: `slug`, `nombre`, `clave` (el
+nombre en minusculas y sin tildes, que se usa como respaldo si el id de club
+falla y es lo que la web resalta), `ids` por federacion y la lista de `grupos`.
+Los ficheros de salida se llaman como el slug, y la web se entera por
+`docs/clubes.json`: no hay que tocar el HTML.
 
 ## Local
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Calendario CV Collado Villalba</title>
+<title>Calendario de partidos</title>
 <style>
 :root{--bg:#f7f8fa;--card:#fff;--txt:#16181d;--mut:#6b7280;--line:#e5e7eb;--acc:#0b63c5;--warn:#b45309;--warnbg:#fef3c7}
 @media(prefers-color-scheme:dark){:root{--bg:#111318;--card:#1b1e25;--txt:#e9eaee;--mut:#9aa1ad;--line:#2c313b;--acc:#63a4ff;--warn:#fbbf24;--warnbg:#3a2f12}}
@@ -31,7 +31,7 @@ a.gcal{text-decoration:none;color:var(--acc);border:1px solid var(--line);border
 </style>
 </head>
 <body><main>
-<h1>CV Collado Villalba</h1>
+<h1 id="titulo">Cargando…</h1>
 <p class="sub" id="resumen">Cargando…</p>
 
 <div class="sus">
@@ -42,6 +42,7 @@ a.gcal{text-decoration:none;color:var(--acc);border:1px solid var(--line);border
 </div>
 
 <div class="filtros">
+  <select id="clubsel"></select>
   <label class="tick"><input type="checkbox" id="casa" checked> Solo partidos en casa</label>
   <select id="equipo"><option value="">Todos los equipos</option></select>
   <button id="ocultar">Ocultar pasados</button>
@@ -50,15 +51,12 @@ a.gcal{text-decoration:none;color:var(--acc);border:1px solid var(--line);border
 <div id="lista"></div>
 </main>
 <script>
-const FEED = new URL('calendario.ics', location.href).href;
-document.getElementById('feed').textContent = FEED;
-
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
 const DIAS = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
 const hoy = new Date().toISOString().slice(0, 10);
-let partidos = [], soloFuturos = true;
+let partidos = [], soloFuturos = true, clubes = [], club = null;
 
-const marca = t => /collado villalba/i.test(t) ? `<em>${t}</em>` : t;
+const marca = t => new RegExp(club.clave, 'i').test(t) ? `<em>${t}</em>` : t;
 
 function gcal(p) {
   const f = p.fecha.replaceAll('-', '');
@@ -91,7 +89,7 @@ function pinta() {
     (!soloFuturos || p.fecha >= hoy) && (!soloCasa || p.casa));
   document.getElementById('resumen').textContent =
     `${ver.length} partidos · ${ver.filter(p => !p.confirmado).length} sin hora confirmada` +
-    ` · de ${partidos.length} en total · datos de RFEVB y FMVoley`;
+    ` · de ${partidos.length} en total · datos de las federaciones`;
   let html = '', mes = '';
   for (const p of ver) {
     const d = new Date(p.fecha + 'T12:00');
@@ -113,13 +111,34 @@ function pinta() {
   document.getElementById('lista').innerHTML = html || '<p>No hay partidos.</p>';
 }
 
-fetch('partidos.json').then(r => r.json()).then(d => {
-  partidos = d;
-  document.getElementById('equipo').insertAdjacentHTML('beforeend',
-    [...new Set(d.map(p => p.competicion))].map(c => `<option>${c}</option>`).join(''));
-  pinta();
+const selClub = document.getElementById('clubsel');
+
+// Un club = un .json con sus partidos y un .ics con los de casa. El selector y los
+// nombres de fichero salen de clubes.json, que escribe fetch.py: anadir un club a
+// CLUBES no obliga a tocar esta pagina.
+function carga(slug) {
+  club = clubes.find(c => c.slug === slug) || clubes[0];
+  selClub.value = club.slug;
+  document.title = 'Calendario ' + club.nombre;
+  document.getElementById('titulo').textContent = club.nombre;
+  document.getElementById('feed').textContent = new URL(club.ics, location.href).href;
+  // Cada club tiene su URL para poder guardarla en marcadores. En file:// no vale.
+  if (location.protocol !== 'file:') history.replaceState(null, '', '?club=' + club.slug);
+  fetch(club.json).then(r => r.json()).then(d => {
+    partidos = d;
+    document.getElementById('equipo').innerHTML = '<option value="">Todos los equipos</option>' +
+      [...new Set(d.map(p => p.competicion))].map(c => `<option>${c}</option>`).join('');
+    pinta();
+  });
+}
+
+fetch('clubes.json').then(r => r.json()).then(d => {
+  clubes = d;
+  selClub.innerHTML = d.map(c => `<option value="${c.slug}">${c.nombre}</option>`).join('');
+  carga(new URLSearchParams(location.search).get('club'));
 });
 
+selClub.onchange = () => carga(selClub.value);
 document.getElementById('equipo').onchange = pinta;
 document.getElementById('casa').onchange = pinta;
 document.getElementById('ocultar').onclick = e => {
