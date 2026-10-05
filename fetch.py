@@ -64,7 +64,8 @@ CLUBES = [
         "ids": {FMV: "19"},
         "grupos": [
             ("Senior Fem. 2a Aut. Preferente - Grupo A", FMV, 34075),  # equipo A
-            ("Senior Fem. 1a Aut. Zonal - Grupo A", FMV, 34222),       # equipo B
+            # Fuera por ahora: el equipo B no se sigue. Descomentar para recuperarlo.
+            # ("Senior Fem. 1a Aut. Zonal - Grupo A", FMV, 34222),       # equipo B
         ],
     },
     {
@@ -74,7 +75,8 @@ CLUBES = [
         "ids": {FMV: "155"},
         "grupos": [
             ("Senior Fem. 1a Aut. Zonal - Grupo A", FMV, 34222),  # equipo Negro
-            ("Senior Fem. 2a Aut. Zonal - Unico", FMV, 34229),    # equipo Rojo
+            # Fuera por ahora: el equipo Rojo no se sigue. Descomentar para recuperarlo.
+            # ("Senior Fem. 2a Aut. Zonal - Unico", FMV, 34229),    # equipo Rojo
         ],
     },
 ]

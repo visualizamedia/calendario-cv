@@ -6,8 +6,8 @@ APIs publicas de la RFEVB y la Federacion de Madrid. Ahora mismo hay tres:
 | Club | Equipos | Feed |
 |---|---|---|
 | CV Collado Villalba | los cuatro del club | `calendario.ics` |
-| CV Majadahonda | senior femenino (A y B) | `majadahonda.ics` |
-| CV Guadarrama | senior femenino (Negro y Rojo) | `guadarrama.ics` |
+| CV Majadahonda | senior femenino A | `majadahonda.ics` |
+| CV Guadarrama | senior femenino Negro | `guadarrama.ics` |
 
 La web es una sola pagina con un selector de club. Cada club tiene su propia
 direccion para guardarla en marcadores: `?club=collado-villalba`,
@@ -88,9 +88,13 @@ Todo esto lo cubre `python fetch.py --demo`, que es el primer paso de la accion.
 | Collado Villalba | | Senior Fem. 2a Aut. Preferente Grupo A | intranet.fmvoley.com | 34075 |
 | Collado Villalba | | Junior Fem. 1a Aut. Preferente Unico | intranet.fmvoley.com | 33941 |
 | Majadahonda | 19 Madrid | Senior Fem. 2a Aut. Preferente Grupo A (equipo A) | intranet.fmvoley.com | 34075 |
-| Majadahonda | | Senior Fem. 1a Aut. Zonal Grupo A (equipo B) | intranet.fmvoley.com | 34222 |
+| Majadahonda | | ~~Senior Fem. 1a Aut. Zonal Grupo A (equipo B)~~ retirado | intranet.fmvoley.com | 34222 |
 | Guadarrama | 155 Madrid | Senior Fem. 1a Aut. Zonal Grupo A (Negro) | intranet.fmvoley.com | 34222 |
-| Guadarrama | | Senior Fem. 2a Aut. Zonal Unico (Rojo) | intranet.fmvoley.com | 34229 |
+| Guadarrama | | ~~Senior Fem. 2a Aut. Zonal Unico (Rojo)~~ retirado | intranet.fmvoley.com | 34229 |
+
+El equipo B de Majadahonda y el Rojo de Guadarrama estan fuera de sus
+calendarios por ahora: sus lineas siguen en `CLUBES`, comentadas, para
+recuperarlos descomentandolas.
 
 Ni Majadahonda ni Guadarrama tienen equipo senior femenino en competicion
 nacional, asi que sus dos calendarios solo usan la API de la federacion
