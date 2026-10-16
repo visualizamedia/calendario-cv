@@ -196,20 +196,6 @@
   "proviene": ""
  },
  {
-  "id": "34075-58097",
-  "competicion": "Senior Fem. 2a Aut. Preferente - Grupo A",
-  "jornada": "4",
-  "fecha": "2026-10-24",
-  "hora": "20:00",
-  "local": "CV MAJADAHONDA A",
-  "visitante": "CIRCE FISIOTERAPIA CV COLLADO VILLALBA",
-  "pabellon": "PRINCIPE FELIPE, POLIDEPORTIVO",
-  "casa": false,
-  "confirmado": true,
-  "aplazado": false,
-  "proviene": ""
- },
- {
   "id": "33941-57302",
   "competicion": "Junior Fem. 1a Aut. Preferente - Unico",
   "jornada": "4",
@@ -218,6 +204,20 @@
   "local": "CDE PARLA VOLEY ORTOPEDIA A",
   "visitante": "CV COLLADO VILLALBA",
   "pabellon": "MIGUEL HERNANDEZ, CEIP",
+  "casa": false,
+  "confirmado": true,
+  "aplazado": false,
+  "proviene": ""
+ },
+ {
+  "id": "34075-58097",
+  "competicion": "Senior Fem. 2a Aut. Preferente - Grupo A",
+  "jornada": "4",
+  "fecha": "2026-10-25",
+  "hora": "19:45",
+  "local": "CV MAJADAHONDA A",
+  "visitante": "CIRCE FISIOTERAPIA CV COLLADO VILLALBA",
+  "pabellon": "ANTONIO MACHADO, COLEGIO",
   "casa": false,
   "confirmado": true,
   "aplazado": false,
