@@ -238,20 +238,6 @@
   "proviene": ""
  },
  {
-  "id": "33941-57309",
-  "competicion": "Junior Fem. 1a Aut. Preferente - Unico",
-  "jornada": "5",
-  "fecha": "2026-11-01",
-  "hora": null,
-  "local": "CV COLLADO VILLALBA",
-  "visitante": "CV SANSE",
-  "pabellon": "",
-  "casa": true,
-  "confirmado": false,
-  "aplazado": false,
-  "proviene": ""
- },
- {
   "id": "226-2104",
   "competicion": "Femenino SF2 - Grupo C",
   "jornada": "5",
@@ -275,6 +261,20 @@
   "visitante": "COX CV Collado Villalba",
   "pabellon": "C.D.M. ENTREVÍAS",
   "casa": false,
+  "confirmado": true,
+  "aplazado": false,
+  "proviene": ""
+ },
+ {
+  "id": "33941-57309",
+  "competicion": "Junior Fem. 1a Aut. Preferente - Unico",
+  "jornada": "5",
+  "fecha": "2026-11-01",
+  "hora": "17:30",
+  "local": "CV COLLADO VILLALBA",
+  "visitante": "CV SANSE",
+  "pabellon": "ANTONIO MACHADO, COLEGIO",
+  "casa": true,
   "confirmado": true,
   "aplazado": false,
   "proviene": ""
