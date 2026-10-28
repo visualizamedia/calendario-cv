@@ -280,6 +280,20 @@
   "proviene": ""
  },
  {
+  "id": "33941-57316",
+  "competicion": "Junior Fem. 1a Aut. Preferente - Unico",
+  "jornada": "6",
+  "fecha": "2026-11-07",
+  "hora": "13:30",
+  "local": "VP MADRID A AMARILLO",
+  "visitante": "CV COLLADO VILLALBA",
+  "pabellon": "CEIP LA RIOJA",
+  "casa": false,
+  "confirmado": true,
+  "aplazado": false,
+  "proviene": ""
+ },
+ {
   "id": "87-1374",
   "competicion": "Masculino SM2 - Grupo C",
   "jornada": "6",
@@ -304,20 +318,6 @@
   "pabellon": "ANTONIO MACHADO, COLEGIO",
   "casa": true,
   "confirmado": true,
-  "aplazado": false,
-  "proviene": ""
- },
- {
-  "id": "33941-57316",
-  "competicion": "Junior Fem. 1a Aut. Preferente - Unico",
-  "jornada": "6",
-  "fecha": "2026-11-08",
-  "hora": null,
-  "local": "VP MADRID A AMARILLO",
-  "visitante": "CV COLLADO VILLALBA",
-  "pabellon": "",
-  "casa": false,
-  "confirmado": false,
   "aplazado": false,
   "proviene": ""
  },
