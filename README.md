@@ -123,3 +123,35 @@ python fetch.py          # regenera docs/
 ```
 
 Sin dependencias: solo biblioteca estandar.
+
+## Marcador en vivo para vMix
+
+`marcador.py` no tiene nada que ver con el calendario: lee el marcador de un
+partido concreto y lo deja en CSV para usarlo como Data Source de vMix. Dos
+fuentes, las dos publicas:
+
+- `getPartido?partidoId=` da los sets y los parciales de cada set.
+- `/Public/ResumenPartido.aspx?Id=` da el acta electronica: estado del partido,
+  hora de comienzo, alineaciones con dorsal y nombre, colores de camiseta,
+  tarjetas y el punto a punto con el minuto de cada accion. Solo existe desde
+  que el arbitro abre el acta, y el punto a punto solo lo lleva la federacion
+  madrileña (en las competiciones nacionales el acta no lo trae).
+
+```
+python marcador.py --hoy                     # partidos de hoy y su partidoId
+python marcador.py --partido 58089 --bucle    # escribe vmix/*.csv cada 5 s
+python marcador.py --partido 58089 --bucle --grupo 34075   # + clasificacion
+python marcador.py --demo                     # autocomprobacion
+```
+
+En `vmix/` quedan `marcador.csv` (una fila con el estado), `jugadores.csv`,
+`eventos.csv`, `clasificacion.csv` y `registro.csv` (el historico de la sesion,
+para medir el retraso). Cada fichero se escribe en un temporal y se renombra
+encima, asi vMix nunca lee uno a medias. En vMix: Settings > Data Sources > Add
+> CSV, apuntar al fichero y poner el refresco en 1 s.
+
+`hoja.gs` hace lo mismo contra una hoja de Google, para lo que no corra: el
+activador de Apps Script no baja de un minuto.
+
+Aviso: `getPartido` devuelve `finalizado: false` siempre, incluso semanas
+despues del partido. El estado bueno es el del acta.
