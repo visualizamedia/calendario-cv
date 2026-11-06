@@ -3,6 +3,7 @@
 Sin dependencias: solo biblioteca estandar.
 """
 import json
+import re
 import sys
 import unicodedata
 import urllib.request
@@ -123,10 +124,15 @@ def filtra(club, etiqueta, host, grupo_id, jornadas):
                 continue
             dia, _, hora = p["fecha_hora"].partition(" ")
             d, m, a = (int(x) for x in dia.split("/"))
-            h, _, mi = hora.partition(":")
+            # En los partidos de Canarias la federacion escribe la hora canaria y
+            # detras la peninsular: "03/10/2026 15:30 (16:30 en la Península)". Todo
+            # el calendario va en hora de Madrid, asi que vale la ultima que aparezca.
+            horas = re.findall(r"(\d{1,2}):(\d{2})", hora)
+            h, mi = horas[-1] if horas else ("0", "00")
             # La federacion publica 00:00 mientras no cierra el horario. El pabellon
-            # suele llegar a la vez, pero si llega solo la hora ya es dato firme.
-            confirmado = bool(int(h))
+            # suele llegar a la vez, pero si llega solo la hora ya es dato firme. La
+            # hora que manda aqui es la primera: es la que la federacion deja a cero.
+            confirmado = bool(int(horas[0][0])) if horas else False
             # Por id: un partido recolocado puede asomar en dos jornadas a la vez, y
             # dos VEVENT con el mismo UID dejan el calendario en estado indefinido.
             encontrados[f'{grupo_id}-{p["id"]}'] = {
@@ -300,6 +306,15 @@ def demo():
     assert "DTSTART;VALUE=DATE:20261011" in ics(sin_hora.values())
     assert "DTSTART;TZID=Europe/Madrid:20261011T163000" in ics(con_hora.values())
     assert "DTSTART;TZID=Europe/Madrid:20261018T190000" in ics(movido.values())
+    # Los partidos en Canarias llevan la hora peninsular detras entre parentesis: la
+    # buena para un calendario en hora de Madrid es la segunda.
+    canarias = filtra(CT, "T", FM, 5,
+                      fila(fecha_hora="11/10/2026 15:30 (16:30 en la Península)"))
+    assert canarias["5-7"]["hora"] == "16:30" and canarias["5-7"]["confirmado"], canarias
+    # Si la primera hora es 00:00 el horario no esta cerrado, aunque venga nota detras.
+    sin_cerrar = filtra(CT, "T", FM, 5,
+                        fila(fecha_hora="11/10/2026 0:00 (1:00 en la Península)"))
+    assert not sin_cerrar["5-7"]["confirmado"] and sin_cerrar["5-7"]["hora"] is None
     # Cierran la hora pero aun no el pabellon: la hora ya vale, el evento no lleva sitio.
     solo_hora = filtra(CT, "T", FM, 5, fila(fecha_hora="11/10/2026 16:30"))
     assert solo_hora["5-7"]["confirmado"] and "LOCATION" not in ics(solo_hora.values())
