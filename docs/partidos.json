@@ -406,20 +406,6 @@
   "proviene": ""
  },
  {
-  "id": "34075-58111",
-  "competicion": "Senior Fem. 2a Aut. Preferente - Grupo A",
-  "jornada": "7",
-  "fecha": "2026-11-22",
-  "hora": null,
-  "local": "CIRCE FISIOTERAPIA CV COLLADO VILLALBA",
-  "visitante": "CV NUEVA CASTILLA",
-  "pabellon": "",
-  "casa": true,
-  "confirmado": false,
-  "aplazado": false,
-  "proviene": ""
- },
- {
   "id": "33941-57328",
   "competicion": "Junior Fem. 1a Aut. Preferente - Unico",
   "jornada": "8",
@@ -429,6 +415,20 @@
   "visitante": "CV COLLADO VILLALBA",
   "pabellon": "LA NEVERA (PABELLÓN DEMETRIO LOZANO)",
   "casa": false,
+  "confirmado": true,
+  "aplazado": false,
+  "proviene": ""
+ },
+ {
+  "id": "34075-58111",
+  "competicion": "Senior Fem. 2a Aut. Preferente - Grupo A",
+  "jornada": "7",
+  "fecha": "2026-11-22",
+  "hora": "18:30",
+  "local": "CIRCE FISIOTERAPIA CV COLLADO VILLALBA",
+  "visitante": "CV NUEVA CASTILLA",
+  "pabellon": "ANTONIO MACHADO, COLEGIO",
+  "casa": true,
   "confirmado": true,
   "aplazado": false,
   "proviene": ""
