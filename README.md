@@ -52,6 +52,17 @@ Las federaciones publican los partidos aun sin cerrar con hora `00:00` y sin
 pabellon. Esos salen como evento de dia completo marcado `POR CONFIRMAR`, y se
 convierten en evento con hora en cuanto la federacion lo publica.
 
+## Arbitros
+
+La descripcion de cada evento lleva los arbitros designados, y mientras no hay
+designacion pone `Arbitros: sin designar`: lo normal es que no haya nadie
+apuntado hasta los dias previos al partido. Se actualiza en cada ejecucion.
+
+Los arbitros no vienen en el calendario del grupo, hay que pedir la ficha de cada
+partido (`getPartido?partidoId=`), asi que solo se piden los de los partidos en
+casa, que son los que van al `.ics`. Son unas 65 peticiones extra y la
+ejecucion completa pasa de 3 a unos 20 segundos.
+
 ## Cambios que hacen las federaciones
 
 Cada partido tiene un id propio y estable: al moverlo de fecha, de hora o de
@@ -70,6 +81,7 @@ federativo desaparece del feed y Google lo borra.
 | El mismo partido asoma en dos jornadas | Un solo evento, sin UID repetido |
 | Cambia el patrocinador del equipo | Se sigue reconociendo por id de club |
 | Jornada de descanso (`Descansa...`, clubId 0) | No es partido: no genera evento |
+| Designan o cambian a los arbitros | La descripcion del evento se actualiza |
 
 Dos frenos para no publicar un feed incompleto, que le haria borrar eventos a
 Google sin avisar: la descarga para si un grupo devuelve el calendario vacio, y

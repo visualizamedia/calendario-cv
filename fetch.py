@@ -94,14 +94,31 @@ def normaliza(texto):
     return "".join(c for c in sin_tildes if not unicodedata.combining(c)).lower()
 
 
-def descarga(host, grupo_id):
-    url = f"{host}/api/competiciones/getJornadasCalendario?grupoId={grupo_id}"
-    req = urllib.request.Request(url, headers={"User-Agent": "calendario-cv"})
+def consulta(host, ruta):
+    req = urllib.request.Request(f"{host}/api/competiciones/{ruta}",
+                                 headers={"User-Agent": "calendario-cv"})
     with urllib.request.urlopen(req, timeout=30) as r:
-        datos = json.loads(r.read().decode("utf-8"))
+        return json.loads(r.read().decode("utf-8"))
+
+
+def descarga(host, grupo_id):
+    datos = consulta(host, f"getJornadasCalendario?grupoId={grupo_id}")
     if not datos.get("content"):
         raise SystemExit(f"{host} grupo {grupo_id}: sin calendario ({datos.get('Error')})")
     return datos["content"]
+
+
+def designados(host, partido_id):
+    """Los arbitros apuntados a un partido, en orden, o lista vacia si no hay ninguno.
+
+    El calendario del grupo no trae los arbitros: hay que pedir la ficha de cada
+    partido. La designacion suele llegar en los dias previos, asi que esto cambia
+    semana a semana y por eso se consulta en cada ejecucion.
+    """
+    ficha = consulta(host, f"getPartido?partidoId={partido_id}").get("content") or {}
+    # Hay nombres con espacios dobles dentro; se normalizan para que el evento no los
+    # arrastre.
+    return [a for n in range(1, 5) if (a := " ".join((ficha.get(f"arb{n}") or "").split()))]
 
 
 def filtra(club, etiqueta, host, grupo_id, jornadas):
@@ -152,6 +169,8 @@ def filtra(club, etiqueta, host, grupo_id, jornadas):
                 "aplazado": bool(p.get("esAplazado")),
                 "proviene": (p.get("jornadaProviene") or "")
                 if p.get("fechaAplazada") or p.get("esDeOtraJornada") else "",
+                # Lo rellena recoge() solo en los partidos en casa: aqui no hay red.
+                "arbitros": [],
             }
     # Cero partidos = grupoId caducado, club cambiado de grupo o API vacia. Publicar el
     # feed recortado haria que Google borrase esos eventos del calendario sin avisar.
@@ -166,7 +185,13 @@ def recoge(club):
     assert len({g[2] for g in grupos}) == len(grupos), "grupoId repetido: los UID chocarian"
     partidos = {}
     for etiqueta, host, grupo_id in grupos:
-        partidos.update(filtra(club, etiqueta, host, grupo_id, descarga(host, grupo_id)))
+        encontrados = filtra(club, etiqueta, host, grupo_id, descarga(host, grupo_id))
+        # Una ficha por partido en casa, que son los que van al .ics. Los de fuera no
+        # se piden: serian el doble de llamadas para un dato que no se publica.
+        for p in encontrados.values():
+            if p["casa"]:
+                p["arbitros"] = designados(host, p["id"].split("-")[1])
+        partidos.update(encontrados)
     return sorted(partidos.values(), key=lambda p: (p["fecha"], p["hora"] or "00:00"))
 
 
@@ -176,7 +201,7 @@ def sin_sello(texto):
 
 
 def esc(texto):
-    for viejo, nuevo in (("\\", "\\\\"), (";", "\;"), (",", "\,"), ("\n", "\n")):
+    for viejo, nuevo in (("\\", "\\\\"), (";", "\;"), (",", "\,"), ("\n", "\\n")):
         texto = texto.replace(viejo, nuevo)
     return texto
 
@@ -213,6 +238,11 @@ def ics(partidos, calname="CV Collado Villalba (en casa)"):
         descripcion = f'{p["competicion"]} - Jornada {p["jornada"]}'
         if p["proviene"]:
             descripcion += f' (recolocado, venia de la {p["proviene"]})'
+        # Las semanas previas al partido es normal que no haya designacion todavia, y
+        # decirlo vale mas que dejar la linea fuera y que parezca un fallo del feed.
+        arbitros = p.get("arbitros") or []
+        descripcion += ("\n" + ("Árbitro: " if len(arbitros) == 1 else "Árbitros: ")
+                        + (", ".join(arbitros) or "sin designar"))
         lineas += ["BEGIN:VEVENT", f'UID:{p["id"]}@calendario-cv', f"DTSTAMP:{ahora}"]
         if p["confirmado"]:
             h, mi = (int(x) for x in p["hora"].split(":"))
@@ -258,6 +288,13 @@ def demo():
     assert "DTEND;TZID=Europe/Madrid:20261011T183000" in salida
     assert "TZID:Europe/Madrid" in salida
     assert "DESCRIPTION:Test\; con coma\, y punto y coma - Jornada 1" in salida
+    # Sin designacion la descripcion lo dice, y el salto de linea va escapado como \n.
+    corto = dict(p[1], proviene="")
+    assert "DESCRIPTION:Test - Jornada 2\\nÁrbitros: sin designar" in ics([corto])
+    assert "\\nÁrbitro: ANA PEREZ" in ics([dict(corto, arbitros=["ANA PEREZ"])])
+    # La coma entre nombres es texto, asi que sale escapada.
+    assert "\\nÁrbitros: ANA PEREZ\, LUIS GIL" in ics(
+        [dict(corto, arbitros=["ANA PEREZ", "LUIS GIL"])])
     # Un partido recolocado con fecha firme sigue confirmado: solo anota su origen.
     assert "SUMMARY:A - B\r\n" in salida and "APLAZADO" not in salida
     assert "(recolocado\, venia de la J6)" in salida

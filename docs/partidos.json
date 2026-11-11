@@ -11,7 +11,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58078",
@@ -25,7 +26,10 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": [
+   "FELICIA ANGELICA BALAJ ALBU"
+  ]
  },
  {
   "id": "226-2006",
@@ -39,7 +43,12 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": [
+   "JOSE MANUEL TORRES TORRES",
+   "ALFONSO LOPEZ DIAZ",
+   "JAIME RODRIGUEZ PEREZ"
+  ]
  },
  {
   "id": "33941-57287",
@@ -53,7 +62,10 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": [
+   "CLARA RODRÍGUEZ CAMACHO"
+  ]
  },
  {
   "id": "226-2012",
@@ -67,7 +79,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "87-1351",
@@ -81,7 +94,11 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": [
+   "FRANCISCO JAVIER DE SANDE SANCHEZ",
+   "CARLOS NUÑEZ GARCIA"
+  ]
  },
  {
   "id": "34075-58084",
@@ -95,7 +112,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "33941-57289",
@@ -109,7 +127,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "33941-57298",
@@ -123,7 +142,11 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": [
+   "JAVIER JOSÉ MARTÍN MACHADO",
+   "GABRIEL VIDAL LORIGADOS"
+  ]
  },
  {
   "id": "34075-58089",
@@ -137,7 +160,10 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": [
+   "JAVIER JOSÉ MARTÍN MACHADO"
+  ]
  },
  {
   "id": "87-1359",
@@ -151,7 +177,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "226-2017",
@@ -165,7 +192,11 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": [
+   "LUCIA MARTINEZ DIEZ",
+   "ANTONIO CERVANTES FERNANDEZ"
+  ]
  },
  {
   "id": "226-2025",
@@ -179,7 +210,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "87-1362",
@@ -193,7 +225,11 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": [
+   "FRANCISCO MIGUEL MEDEROS PINEDA",
+   "ANTONIO CERVANTES FERNANDEZ"
+  ]
  },
  {
   "id": "33941-57302",
@@ -207,7 +243,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58097",
@@ -221,7 +258,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "226-2028",
@@ -235,7 +273,11 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": [
+   "PAULA ORTIZ MARTINEZ",
+   "DAVID ASENSIO CHACHARO"
+  ]
  },
  {
   "id": "226-2104",
@@ -249,7 +291,11 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": "J17"
+  "proviene": "J17",
+  "arbitros": [
+   "PAULA ORTIZ MARTINEZ",
+   "CARLOS NUÑEZ GARCIA"
+  ]
  },
  {
   "id": "87-1372",
@@ -263,7 +309,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "33941-57309",
@@ -277,7 +324,12 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": [
+   "FRANCISCO GARCÍA CARRIL",
+   "ILIAS BENMOKHTAR EL AZOUANE",
+   "ANA MARIA SÁNCHEZ PADIAL"
+  ]
  },
  {
   "id": "33941-57316",
@@ -291,7 +343,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "87-1374",
@@ -305,7 +358,12 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": [
+   "ANTONIO JOSE DEL TORO SANCHEZ-MATAMOROS",
+   "FRANCISCO SABROSO MORATILLA",
+   "JAIME RODRIGUEZ PEREZ"
+  ]
  },
  {
   "id": "34075-58100",
@@ -319,7 +377,10 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": [
+   "GONZALO HERNANDEZ DE DIEGO"
+  ]
  },
  {
   "id": "34075-58110",
@@ -333,7 +394,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "87-1384",
@@ -347,7 +409,10 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": [
+   "NEUS MARTINEZ FUSTER"
+  ]
  },
  {
   "id": "226-2039",
@@ -361,7 +426,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "33941-57320",
@@ -375,7 +441,8 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "226-2050",
@@ -389,7 +456,10 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": [
+   "ALEJANDRO VICENT BLESA"
+  ]
  },
  {
   "id": "87-1386",
@@ -403,7 +473,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "33941-57328",
@@ -417,7 +488,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58111",
@@ -431,7 +503,8 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "226-2052",
@@ -445,7 +518,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "87-1395",
@@ -459,7 +533,10 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": [
+   "FRANCISCO JAVIER ARRUABARRENA SABROSO"
+  ]
  },
  {
   "id": "34075-58122",
@@ -473,7 +550,8 @@
   "casa": true,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "33941-57331",
@@ -487,7 +565,8 @@
   "casa": true,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "87-1399",
@@ -501,7 +580,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "226-2061",
@@ -515,7 +595,10 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": [
+   "PATRICIA RIUS IGLESIAS"
+  ]
  },
  {
   "id": "87-1406",
@@ -529,7 +612,8 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58124",
@@ -543,7 +627,8 @@
   "casa": false,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "33941-57341",
@@ -557,7 +642,8 @@
   "casa": false,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "226-2065",
@@ -571,7 +657,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "87-1412",
@@ -585,7 +672,8 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "226-2072",
@@ -599,7 +687,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58133",
@@ -613,7 +702,8 @@
   "casa": true,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "33941-57342",
@@ -627,7 +717,8 @@
   "casa": true,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58137",
@@ -641,7 +732,8 @@
   "casa": false,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "33941-57353",
@@ -655,7 +747,8 @@
   "casa": false,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "87-1417",
@@ -669,7 +762,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "226-2078",
@@ -683,7 +777,8 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58144",
@@ -697,7 +792,8 @@
   "casa": false,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "33941-57355",
@@ -711,7 +807,8 @@
   "casa": true,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "226-2083",
@@ -725,7 +822,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "87-1425",
@@ -739,7 +837,8 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58150",
@@ -753,7 +852,8 @@
   "casa": true,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "33941-57364",
@@ -767,7 +867,8 @@
   "casa": false,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "87-1428",
@@ -781,7 +882,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "226-2091",
@@ -795,7 +897,8 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58155",
@@ -809,7 +912,8 @@
   "casa": false,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "33941-57368",
@@ -823,7 +927,8 @@
   "casa": true,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "226-2094",
@@ -837,7 +942,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58163",
@@ -851,7 +957,8 @@
   "casa": true,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "33941-57375",
@@ -865,7 +972,8 @@
   "casa": false,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "87-1438",
@@ -879,7 +987,8 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "226-2038",
@@ -893,7 +1002,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": "J6"
+  "proviene": "J6",
+  "arbitros": []
  },
  {
   "id": "33941-57381",
@@ -907,7 +1017,8 @@
   "casa": true,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "87-1439",
@@ -921,7 +1032,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "226-2105",
@@ -935,7 +1047,8 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58166",
@@ -949,7 +1062,8 @@
   "casa": false,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "33941-57388",
@@ -963,7 +1077,8 @@
   "casa": false,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "87-1446",
@@ -977,7 +1092,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "87-1452",
@@ -991,7 +1107,8 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58176",
@@ -1005,7 +1122,8 @@
   "casa": true,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "33941-57394",
@@ -1019,7 +1137,8 @@
   "casa": true,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "226-2116",
@@ -1033,7 +1152,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "226-2118",
@@ -1047,7 +1167,8 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "87-1461",
@@ -1061,7 +1182,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58177",
@@ -1075,7 +1197,8 @@
   "casa": false,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "33941-57397",
@@ -1089,7 +1212,8 @@
   "casa": false,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "226-2127",
@@ -1103,7 +1227,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "87-1465",
@@ -1117,7 +1242,8 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58188",
@@ -1131,7 +1257,8 @@
   "casa": false,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "33941-57407",
@@ -1145,7 +1272,8 @@
   "casa": true,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "226-2131",
@@ -1159,7 +1287,8 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "87-1472",
@@ -1173,7 +1302,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58190",
@@ -1187,7 +1317,8 @@
   "casa": true,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "33941-57408",
@@ -1201,7 +1332,8 @@
   "casa": false,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58199",
@@ -1215,7 +1347,8 @@
   "casa": false,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58203",
@@ -1229,6 +1362,7 @@
   "casa": true,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  }
 ]

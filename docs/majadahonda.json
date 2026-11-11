@@ -11,7 +11,10 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": [
+   "MARINA FERNANDEZ SANZ"
+  ]
  },
  {
   "id": "34075-58086",
@@ -25,7 +28,12 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": [
+   "MARIO SAFFIOTI",
+   "ALVARO VIGARA NOGUERA",
+   "ALVARO SANCHEZ PEDRAZA"
+  ]
  },
  {
   "id": "34075-58088",
@@ -39,7 +47,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58097",
@@ -53,7 +62,12 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": [
+   "FELICIA ANGELICA BALAJ ALBU",
+   "ELSA MARIA HERVA ISAKSON",
+   "DIEGO FERNANDEZ GARCIA"
+  ]
  },
  {
   "id": "34075-58101",
@@ -67,7 +81,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58108",
@@ -81,7 +96,8 @@
   "casa": true,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58114",
@@ -95,7 +111,8 @@
   "casa": false,
   "confirmado": true,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58119",
@@ -109,7 +126,8 @@
   "casa": true,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58127",
@@ -123,7 +141,8 @@
   "casa": false,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58130",
@@ -137,7 +156,8 @@
   "casa": true,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58140",
@@ -151,7 +171,8 @@
   "casa": false,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58141",
@@ -165,7 +186,8 @@
   "casa": false,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58152",
@@ -179,7 +201,8 @@
   "casa": false,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58154",
@@ -193,7 +216,8 @@
   "casa": true,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58163",
@@ -207,7 +231,8 @@
   "casa": false,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58167",
@@ -221,7 +246,8 @@
   "casa": true,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58174",
@@ -235,7 +261,8 @@
   "casa": false,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58180",
@@ -249,7 +276,8 @@
   "casa": true,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58185",
@@ -263,7 +291,8 @@
   "casa": false,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58193",
@@ -277,7 +306,8 @@
   "casa": true,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58196",
@@ -291,7 +321,8 @@
   "casa": false,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  },
  {
   "id": "34075-58206",
@@ -305,6 +336,7 @@
   "casa": true,
   "confirmado": false,
   "aplazado": false,
-  "proviene": ""
+  "proviene": "",
+  "arbitros": []
  }
 ]
