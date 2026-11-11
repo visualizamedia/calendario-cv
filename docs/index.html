@@ -63,7 +63,9 @@ const marca = t => new RegExp(club.clave, 'i').test(t) ? `<em>${t}</em>` : t;
 function arbitros(p) {
   if (!p.casa) return '';
   const a = p.arbitros || [];
-  return (a.length === 1 ? 'Árbitro: ' : 'Árbitros: ') + (a.join(', ') || 'sin designar');
+  const linea = (a.length === 1 ? 'Árbitro: ' : 'Árbitros: ') + (a.join(', ') || 'sin designar');
+  // El anotador es el tercer hueco de la ficha y va aparte: no es un árbitro más.
+  return p.anotador ? linea + ' · Anotador: ' + p.anotador : linea;
 }
 
 function gcal(p) {

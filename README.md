@@ -54,9 +54,18 @@ convierten en evento con hora en cuanto la federacion lo publica.
 
 ## Arbitros
 
-La descripcion de cada evento lleva los arbitros designados, y mientras no hay
-designacion pone `Arbitros: sin designar`: lo normal es que no haya nadie
-apuntado hasta los dias previos al partido. Se actualiza en cada ejecucion.
+La descripcion de cada evento lleva la designacion, y mientras no hay nadie
+apuntado pone `Arbitros: sin designar`: lo normal es que no llegue hasta los dias
+previos al partido. Se actualiza en cada ejecucion.
+
+La ficha del partido tiene cuatro huecos de designacion. La federacion los
+publica como `Arbitro 1`, `Arbitro 2` y `Anotador`, asi que el tercero sale
+aparte y los demas como arbitros:
+
+    Arbitros: JOSE MANUEL TORRES TORRES, ALFONSO LOPEZ DIAZ - Anotador: JAIME RODRIGUEZ PEREZ
+
+Un partido puede tener arbitro 1 y anotador sin arbitro 2, de modo que no vale
+contar cuantos nombres vienen: hay que mirar en que hueco esta cada uno.
 
 Los arbitros no vienen en el calendario del grupo, hay que pedir la ficha de cada
 partido (`getPartido?partidoId=`), asi que solo se piden los de los partidos en

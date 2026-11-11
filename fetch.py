@@ -109,16 +109,26 @@ def descarga(host, grupo_id):
 
 
 def designados(host, partido_id):
-    """Los arbitros apuntados a un partido, en orden, o lista vacia si no hay ninguno.
+    """(arbitros, anotador) de un partido. Vacios mientras no hay designacion.
 
-    El calendario del grupo no trae los arbitros: hay que pedir la ficha de cada
-    partido. La designacion suele llegar en los dias previos, asi que esto cambia
-    semana a semana y por eso se consulta en cada ejecucion.
+    El calendario del grupo no trae la designacion: hay que pedir la ficha de cada
+    partido. Suele llegar en los dias previos, asi que cambia semana a semana y por
+    eso se consulta en cada ejecucion.
+
+    La ficha tiene cuatro huecos y la federacion los enseña como "Arbitro 1",
+    "Arbitro 2" y "Anotador": el tercero es el anotador, los demas son arbitros. Un
+    partido puede tener arbitro 1 y anotador sin arbitro 2, asi que no vale contar
+    cuantos vienen, hay que mirar cual es cada uno.
     """
-    ficha = consulta(host, f"getPartido?partidoId={partido_id}").get("content") or {}
+    return reparto(consulta(host, f"getPartido?partidoId={partido_id}").get("content") or {})
+
+
+def reparto(ficha):
+    """Los cuatro huecos de la ficha repartidos en (arbitros, anotador). Sin red."""
     # Hay nombres con espacios dobles dentro; se normalizan para que el evento no los
     # arrastre.
-    return [a for n in range(1, 5) if (a := " ".join((ficha.get(f"arb{n}") or "").split()))]
+    nombre = lambda hueco: " ".join((ficha.get(hueco) or "").split())  # noqa: E731
+    return ([a for h in ("arb1", "arb2", "arb4") if (a := nombre(h))], nombre("arb3"))
 
 
 def filtra(club, etiqueta, host, grupo_id, jornadas):
@@ -169,8 +179,9 @@ def filtra(club, etiqueta, host, grupo_id, jornadas):
                 "aplazado": bool(p.get("esAplazado")),
                 "proviene": (p.get("jornadaProviene") or "")
                 if p.get("fechaAplazada") or p.get("esDeOtraJornada") else "",
-                # Lo rellena recoge() solo en los partidos en casa: aqui no hay red.
+                # Los rellena recoge() solo en los partidos en casa: aqui no hay red.
                 "arbitros": [],
+                "anotador": "",
             }
     # Cero partidos = grupoId caducado, club cambiado de grupo o API vacia. Publicar el
     # feed recortado haria que Google borrase esos eventos del calendario sin avisar.
@@ -190,7 +201,7 @@ def recoge(club):
         # se piden: serian el doble de llamadas para un dato que no se publica.
         for p in encontrados.values():
             if p["casa"]:
-                p["arbitros"] = designados(host, p["id"].split("-")[1])
+                p["arbitros"], p["anotador"] = designados(host, p["id"].split("-")[1])
         partidos.update(encontrados)
     return sorted(partidos.values(), key=lambda p: (p["fecha"], p["hora"] or "00:00"))
 
@@ -241,8 +252,11 @@ def ics(partidos, calname="CV Collado Villalba (en casa)"):
         # Las semanas previas al partido es normal que no haya designacion todavia, y
         # decirlo vale mas que dejar la linea fuera y que parezca un fallo del feed.
         arbitros = p.get("arbitros") or []
-        descripcion += ("\n" + ("Árbitro: " if len(arbitros) == 1 else "Árbitros: ")
-                        + (", ".join(arbitros) or "sin designar"))
+        linea = ("Árbitro: " if len(arbitros) == 1 else "Árbitros: ") + (
+            ", ".join(arbitros) or "sin designar")
+        if p.get("anotador"):
+            linea += f' · Anotador: {p["anotador"]}'
+        descripcion += "\n" + linea
         lineas += ["BEGIN:VEVENT", f'UID:{p["id"]}@calendario-cv', f"DTSTAMP:{ahora}"]
         if p["confirmado"]:
             h, mi = (int(x) for x in p["hora"].split(":"))
@@ -295,6 +309,26 @@ def demo():
     # La coma entre nombres es texto, asi que sale escapada.
     assert "\\nÁrbitros: ANA PEREZ\, LUIS GIL" in ics(
         [dict(corto, arbitros=["ANA PEREZ", "LUIS GIL"])])
+    # El anotador va aparte: no es un arbitro mas. Las lineas largas van plegadas, asi
+    # que hay que desplegarlas para mirar el texto entero.
+    def desplegado(partido):
+        return ics([partido]).replace("\r\n ", "")
+
+    assert "\\nÁrbitros: ANA PEREZ\, LUIS GIL · Anotador: SARA DIAZ" in desplegado(
+        dict(corto, arbitros=["ANA PEREZ", "LUIS GIL"], anotador="SARA DIAZ"))
+    # Un partido puede tener arbitro 1 y anotador sin arbitro 2.
+    assert "\\nÁrbitro: ANA PEREZ · Anotador: SARA DIAZ" in desplegado(
+        dict(corto, arbitros=["ANA PEREZ"], anotador="SARA DIAZ"))
+    # Y puede tener anotador sin ningun arbitro todavia.
+    assert "\\nÁrbitros: sin designar · Anotador: SARA DIAZ" in desplegado(
+        dict(corto, anotador="SARA DIAZ"))
+    # El tercer hueco de la ficha es el anotador, no un arbitro.
+    assert reparto({"arb1": "A", "arb2": "B", "arb3": "C"}) == (["A", "B"], "C")
+    # Hay partidos con arbitro 1 y anotador y sin arbitro 2: no se puede ir por orden.
+    assert reparto({"arb1": "A", "arb2": "", "arb3": "C", "arb4": None}) == (["A"], "C")
+    assert reparto({}) == ([], "")
+    # Los espacios dobles que mete la federacion en algun nombre se normalizan.
+    assert reparto({"arb1": "ANA  PEREZ "}) == (["ANA PEREZ"], "")
     # Un partido recolocado con fecha firme sigue confirmado: solo anota su origen.
     assert "SUMMARY:A - B\r\n" in salida and "APLAZADO" not in salida
     assert "(recolocado\, venia de la J6)" in salida
