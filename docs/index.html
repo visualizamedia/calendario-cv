@@ -71,8 +71,7 @@ function gcal(p) {
   const u = new URLSearchParams({
     action: 'TEMPLATE',
     text: (p.confirmado ? '' : 'POR CONFIRMAR: ') + `${p.local} - ${p.visitante}`,
-    details: `${p.competicion} — Jornada ${p.jornada}` + (p.casa ? '
-' + arbitros(p) : ''),
+    details: `${p.competicion} — Jornada ${p.jornada}` + (p.casa ? '\n' + arbitros(p) : ''),
     location: p.pabellon,
     ctz: 'Europe/Madrid',
   });
