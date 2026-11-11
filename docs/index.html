@@ -58,12 +58,21 @@ let partidos = [], soloFuturos = true, clubes = [], club = null;
 
 const marca = t => new RegExp(club.clave, 'i').test(t) ? `<em>${t}</em>` : t;
 
+// Los arbitros solo se piden para los partidos en casa, asi que en los de fuera no
+// se dice nada en vez de dar a entender que no hay designacion.
+function arbitros(p) {
+  if (!p.casa) return '';
+  const a = p.arbitros || [];
+  return (a.length === 1 ? 'Árbitro: ' : 'Árbitros: ') + (a.join(', ') || 'sin designar');
+}
+
 function gcal(p) {
   const f = p.fecha.replaceAll('-', '');
   const u = new URLSearchParams({
     action: 'TEMPLATE',
     text: (p.confirmado ? '' : 'POR CONFIRMAR: ') + `${p.local} - ${p.visitante}`,
-    details: `${p.competicion} — Jornada ${p.jornada}`,
+    details: `${p.competicion} — Jornada ${p.jornada}` + (p.casa ? '
+' + arbitros(p) : ''),
     location: p.pabellon,
     ctz: 'Europe/Madrid',
   });
@@ -103,7 +112,7 @@ function pinta() {
       <div class="quien">
         <div class="eq">${marca(p.local)} <span style="color:var(--mut)">vs</span> ${marca(p.visitante)}
           ${p.aplazado ? '<span class="tag">APLAZADO</span>' : p.confirmado ? '' : '<span class="tag">POR CONFIRMAR</span>'}</div>
-        <div class="meta">${p.competicion} · J${p.jornada}${p.pabellon ? ' · ' + p.pabellon : ''}${p.proviene ? ' · recolocado, venía de la ' + p.proviene : ''}</div>
+        <div class="meta">${p.competicion} · J${p.jornada}${p.pabellon ? ' · ' + p.pabellon : ''}${p.proviene ? ' · recolocado, venía de la ' + p.proviene : ''}${p.casa ? ' · ' + arbitros(p) : ''}</div>
       </div>
       <a class="gcal" target="_blank" rel="noopener" href="${gcal(p)}">+ Google</a>
     </div>`;
