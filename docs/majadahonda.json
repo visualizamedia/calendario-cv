@@ -100,7 +100,9 @@
   "confirmado": true,
   "aplazado": false,
   "proviene": "",
-  "arbitros": [],
+  "arbitros": [
+   "JAVIER JOSÉ MARTÍN MACHADO"
+  ],
   "anotador": ""
  },
  {
