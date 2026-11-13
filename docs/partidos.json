@@ -466,8 +466,11 @@
   "confirmado": true,
   "aplazado": false,
   "proviene": "",
-  "arbitros": [],
-  "anotador": ""
+  "arbitros": [
+   "DIEGO FERNANDEZ GARCIA",
+   "DANIEL FERNANDEZ MUÑOZ"
+  ],
+  "anotador": "CARMEN JIMENEZ GARCIA"
  },
  {
   "id": "226-2050",
