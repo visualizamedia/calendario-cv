@@ -19,5 +19,12 @@
   "clave": "guadarrama",
   "json": "guadarrama.json",
   "ics": "guadarrama.ics"
+ },
+ {
+  "slug": "majadahonda-playa",
+  "nombre": "CV Majadahonda voley playa",
+  "clave": "majadahonda",
+  "json": "majadahonda-playa.json",
+  "ics": "majadahonda-playa.ics"
  }
 ]

@@ -1,17 +1,18 @@
 # Calendario de partidos de voleibol
 
 Genera un calendario por club con los partidos de sus equipos, a partir de las
-APIs publicas de la RFEVB y la Federacion de Madrid. Ahora mismo hay tres:
+APIs publicas de la RFEVB y la Federacion de Madrid. Ahora mismo hay cuatro:
 
 | Club | Equipos | Feed |
 |---|---|---|
 | CV Collado Villalba | los cuatro del club | `calendario.ics` |
 | CV Majadahonda | senior femenino A | `majadahonda.ics` |
 | CV Guadarrama | senior femenino Negro | `guadarrama.ics` |
+| CV Majadahonda voley playa | femenino LNVP 1a Division | `majadahonda-playa.ics` |
 
 La web es una sola pagina con un selector de club. Cada club tiene su propia
 direccion para guardarla en marcadores: `?club=collado-villalba`,
-`?club=majadahonda`, `?club=guadarrama`.
+`?club=majadahonda`, `?club=guadarrama`, `?club=majadahonda-playa`.
 
 ## Puesta en marcha
 
@@ -30,10 +31,11 @@ Otros calendarios → Añadir por URL:
 https://<usuario>.github.io/<repo>/calendario.ics     # CV Collado Villalba
 https://<usuario>.github.io/<repo>/majadahonda.ics    # CV Majadahonda
 https://<usuario>.github.io/<repo>/guadarrama.ics     # CV Guadarrama
+https://<usuario>.github.io/<repo>/majadahonda-playa.ics   # CV Majadahonda voley playa
 ```
 
-Son tres calendarios independientes: puedes suscribirte a uno, a dos o a los
-tres, y en Google aparecen como calendarios separados que se pueden ocultar por
+Son cuatro calendarios independientes: puedes suscribirte a uno o a varios, y
+en Google aparecen como calendarios separados que se pueden ocultar por
 separado.
 
 Cada feed lleva **solo los partidos en casa**, que son a los que se va a ir.
@@ -112,16 +114,31 @@ Todo esto lo cubre `python fetch.py --demo`, que es el primer paso de la accion.
 | Majadahonda | | ~~Senior Fem. 1a Aut. Zonal Grupo A (equipo B)~~ retirado | intranet.fmvoley.com | 34222 |
 | Guadarrama | 155 Madrid | Senior Fem. 1a Aut. Zonal Grupo A (Negro) | intranet.fmvoley.com | 34222 |
 | Guadarrama | | ~~Senior Fem. 2a Aut. Zonal Unico (Rojo)~~ retirado | intranet.fmvoley.com | 34229 |
+| Majadahonda voley playa | 9366 RFEVB | LNVP Primera Division Femenina Unico | intranet.esvoley.es | 486 |
+| Majadahonda voley playa | | ~~Semifinal A / Semifinal B / Final~~ sin equipos todavia | intranet.esvoley.es | 487 / 488 / 489 |
 
 El equipo B de Majadahonda y el Rojo de Guadarrama estan fuera de sus
 calendarios por ahora: sus lineas siguen en `CLUBES`, comentadas, para
 recuperarlos descomentandolas.
 
-Ni Majadahonda ni Guadarrama tienen equipo senior femenino en competicion
-nacional, asi que sus dos calendarios solo usan la API de la federacion
-madrileña. Un mismo `grupoId` puede aparecer en dos clubes (Villalba y
+Ni Majadahonda ni Guadarrama tienen equipo senior femenino de pista en
+competicion nacional, asi que esos dos calendarios solo usan la API de la
+federacion madrileña. Un mismo `grupoId` puede aparecer en dos clubes (Villalba y
 Majadahonda A comparten el 34075); lo que no puede es repetirse dentro de un
 club, y `recoge` lo comprueba.
+
+El CV Majadahonda de voley playa es otro club, con su propio id nacional
+(9366), y va en un calendario aparte. Su liga vive en `intranet.esvoley.es`,
+el dominio nuevo de la federacion nacional, que sirve la misma API que
+`rfevb.fontventa.com`. Dos cosas que ahi no publican: el resultado del
+enfrentamiento (un partido de la LNVP son varios duelos de parejas y la API lo
+devuelve a cero incluso ya jugado; el marcador solo sale en la pagina de
+esvoley.es) y la designacion de arbitros, que viene vacia en toda la
+competicion. Se pide igual en cada ejecucion, asi que el dia que la rellenen
+aparecera en el evento sin tocar nada. La ficha de estos partidos si trae
+`linkMarcador` (marcador en directo por pista, via SignalR en
+`intranet.esvoley.es/partidosHub`), `linkStreaming` y
+`linkEstadisticasPartido`, que no se usan aqui.
 
 Los `grupoId` cambian cada temporada. Para localizar los nuevos: abre la pagina
 del grupo en esvoley.es o fmvoley.com y mira el parametro `grupoId` de las

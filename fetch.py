@@ -33,6 +33,9 @@ END:VTIMEZONE""".splitlines()
 OUT = Path(__file__).parent / "docs"
 RFEVB = "https://rfevb.fontventa.com"
 FMV = "https://intranet.fmvoley.com"
+# Dominio nuevo de la federacion nacional, con la misma API. Es donde estan las ligas
+# de voley playa; el voleibol de pista sigue respondiendo igual en RFEVB.
+ESVOLEY = "https://intranet.esvoley.es"
 
 # Cada club se reconoce por su id en cada federacion. El nombre del equipo lleva
 # patrocinador ("COX CV Collado Villalba", "HOGARES CV GUADARRAMA NEGRO") y puede
@@ -78,6 +81,27 @@ CLUBES = [
             ("Senior Fem. 1a Aut. Zonal - Grupo A", FMV, 34222),  # equipo Negro
             # Fuera por ahora: el equipo Rojo no se sigue. Descomentar para recuperarlo.
             # ("Senior Fem. 2a Aut. Zonal - Unico", FMV, 34229),    # equipo Rojo
+        ],
+    },
+    {
+        # Voley playa: otro club distinto del CV Majadahonda de pista, con su propio id
+        # nacional. Un partido de la LNVP son varios duelos de parejas y la federacion
+        # no publica su resultado por la API, solo el calendario; los cuatro huecos de
+        # arbitro vienen vacios en toda la competicion, incluidos los partidos ya
+        # jugados, asi que de momento el evento dira siempre "sin designar". Se piden
+        # igual en cada ejecucion por si algun dia los rellenan.
+        "slug": "majadahonda-playa",
+        "nombre": "CV Majadahonda voley playa",
+        "clave": "majadahonda",
+        "ids": {ESVOLEY: "9366"},
+        "grupos": [
+            ("LNVP Primera Division Femenina - Unico", ESVOLEY, 486),
+            # La fase final se juega el 1 y 2 de mayo de 2027 y hasta entonces va sin
+            # equipos: los grupos 487 y 488 (semifinales) y 489 (final) darian cero
+            # partidos del club y pararian la ejecucion. Descomentar cuando se sepa.
+            # ("LNVP Primera Division Femenina - Semifinal A", ESVOLEY, 487),
+            # ("LNVP Primera Division Femenina - Semifinal B", ESVOLEY, 488),
+            # ("LNVP Primera Division Femenina - Final", ESVOLEY, 489),
         ],
     },
 ]
