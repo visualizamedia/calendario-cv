@@ -97,7 +97,9 @@
   "confirmado": true,
   "aplazado": false,
   "proviene": "",
-  "arbitros": [],
+  "arbitros": [
+   "MARINA FERNANDEZ SANZ"
+  ],
   "anotador": ""
  },
  {
