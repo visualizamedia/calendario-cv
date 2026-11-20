@@ -671,7 +671,9 @@
   "confirmado": true,
   "aplazado": false,
   "proviene": "",
-  "arbitros": [],
+  "arbitros": [
+   "MARIA DEL MAR VIDAL FLORES"
+  ],
   "anotador": ""
  },
  {
