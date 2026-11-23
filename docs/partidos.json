@@ -578,22 +578,6 @@
   "anotador": ""
  },
  {
-  "id": "34075-58122",
-  "competicion": "Senior Fem. 2a Aut. Preferente - Grupo A",
-  "jornada": "8",
-  "fecha": "2026-11-29",
-  "hora": null,
-  "local": "CIRCE FISIOTERAPIA CV COLLADO VILLALBA",
-  "visitante": "CLUB VOLEIBOL TORRELODONES B",
-  "pabellon": "",
-  "casa": true,
-  "confirmado": false,
-  "aplazado": false,
-  "proviene": "",
-  "arbitros": [],
-  "anotador": ""
- },
- {
   "id": "33941-57331",
   "competicion": "Junior Fem. 1a Aut. Preferente - Unico",
   "jornada": "9",
@@ -722,7 +706,9 @@
   "confirmado": true,
   "aplazado": false,
   "proviene": "",
-  "arbitros": [],
+  "arbitros": [
+   "JORGE JUAN LAVIN GONZALEZ"
+  ],
   "anotador": ""
  },
  {
@@ -768,6 +754,22 @@
   "pabellon": "",
   "casa": true,
   "confirmado": false,
+  "aplazado": false,
+  "proviene": "",
+  "arbitros": [],
+  "anotador": ""
+ },
+ {
+  "id": "34075-58122",
+  "competicion": "Senior Fem. 2a Aut. Preferente - Grupo A",
+  "jornada": "8",
+  "fecha": "2026-12-21",
+  "hora": "20:45",
+  "local": "CIRCE FISIOTERAPIA CV COLLADO VILLALBA",
+  "visitante": "CLUB VOLEIBOL TORRELODONES B",
+  "pabellon": "ANTONIO MACHADO, COLEGIO",
+  "casa": true,
+  "confirmado": true,
   "aplazado": false,
   "proviene": "",
   "arbitros": [],

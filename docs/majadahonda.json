@@ -134,7 +134,9 @@
   "confirmado": true,
   "aplazado": false,
   "proviene": "",
-  "arbitros": [],
+  "arbitros": [
+   "MARIO SAFFIOTI"
+  ],
   "anotador": ""
  },
  {
